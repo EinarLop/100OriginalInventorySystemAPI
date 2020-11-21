@@ -9,10 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 const connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'password',
-    database:'100original'
+    host:'us-cdbr-east-02.cleardb.com',
+    user:'b00abd3d14eb97',
+    password:'1fcadd8d',
+    database:'heroku_031336fa3af5061'
 
 })
 
