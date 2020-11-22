@@ -52,7 +52,7 @@ app.get('/local',(req,res)=>{
 app.post('/product',(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
     product = {
-        "id_product": NULL,
+        "id_product": req.body.id_product,
         "product_code": req.body.product_code,
         "unit_price": req.body.unit_price,
         "unit_cost": req.body.unit_cost,
