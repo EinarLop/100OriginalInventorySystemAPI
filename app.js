@@ -21,7 +21,7 @@ app.get('/',(req,res)=>{
     res.send('Welcome to 100Original');
 
 })
-
+/*
 // CRUD from sale
 app.get('/sale',(req,res)=>{
     const sql = "SELECT * from sale";
@@ -37,15 +37,15 @@ app.get('/sale',(req,res)=>{
 
 })
 
-/* Formato para hacer un post en sale 
-{
-    "id_sale": "S0002",
-    "date": "2020-07-11",
-    "quantity": 3,
-    "total": 1500,
-    "id_platform": "P1"
-}
-*/
+//  Formato para hacer un post en sale 
+// {
+//     "id_sale": "S0002",
+//     "date": "2020-07-11",
+//     "quantity": 3,
+//     "total": 1500,
+//     "id_platform": "P1"
+// }
+
 
 app.post('/sale',(req,res)=>{
     const sql ='INSERT into sale SET ?'
@@ -118,19 +118,19 @@ app.get('/product',(req,res)=>{
 })
 
 
-/* Formato para hacer un post de un nuevo de producto
-{
-    "id_product": "P0007",
-    "unit_price": 350,
-    "unit_cost": 200,
-    "product_name": "Reloj contra agua casio",
-    "product_code": "CAS10201",
-    "stock": 5,
-    "img_url": "www.casioAgua.com",
-    "id_type": "T1",
-    "id_supplier": "S1003"
-}
-*/
+//  Formato para hacer un post de un nuevo de producto
+// {
+//     "id_product": "P0007",
+//     "unit_price": 350,
+//     "unit_cost": 200,
+//     "product_name": "Reloj contra agua casio",
+//     "product_code": "CAS10201",
+//     "stock": 5,
+//     "img_url": "www.casioAgua.com",
+//     "id_type": "T1",
+//     "id_supplier": "S1003"
+// }
+
 app.post('/product',(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
     product = {
@@ -203,13 +203,13 @@ app.get('/supplier',(req,res)=>{
     })
 
 })
-/* Formato para hacer un post de supplier
-{
-        "id_supplier": "S0001",
-        "name": "Bryan Monroy",
-        "contact": "bryamon@gmail.com"
-}
-*/
+//  Formato para hacer un post de supplier
+// {
+//         "id_supplier": "S0001",
+//         "name": "Bryan Monroy",
+//         "contact": "bryamon@gmail.com"
+// }
+
 app.post('/supplier',(req,res)=>{
     const sql ='INSERT into supplier SET ?'
     supplier = {
@@ -274,14 +274,14 @@ app.get('/operation',(req,res)=>{
     })
 
 })
-/* Formato para hacer un post de operation
-    {
-        "id_operation": "O00002",
-        "type": "entrada",
-        "comment": "Devolucion por error de modelo",
-        "id_user": "U0001"
-    }
-*/
+// Formato para hacer un post de operation
+//     {
+//         "id_operation": "O00002",
+//         "type": "entrada",
+//         "comment": "Devolucion por error de modelo",
+//         "id_user": "U0001"
+//     }
+
 app.post('/operation',(req,res)=>{
     const sql ='INSERT into operation SET ?'
     operation = {
@@ -348,12 +348,12 @@ app.get('/platform',(req,res)=>{
     })
 
 })
-/* Formato para hacer un post de platform
-    {
-        "id_platform": "P1",
-        "name": "Amazon"
-    }
-*/
+// Formato para hacer un post de platform
+//     {
+//         "id_platform": "P1",
+//         "name": "Amazon"
+//     }
+
 app.post('/platform',(req,res)=>{
     const sql ='INSERT into platform SET ?'
     platform = {
@@ -416,12 +416,12 @@ app.get('/type',(req,res)=>{
     })
 
 })
-/* Formato para hacer un post de type
-    {
-        "id_type": "T1",
-        "name": "Reloj"
-    }
-*/
+//  Formato para hacer un post de type
+//     {
+//         "id_type": "T1",
+//         "name": "Reloj"
+//     }
+
 
 app.post('/type',(req,res)=>{
     const sql ='INSERT into type SET ?'
@@ -486,14 +486,14 @@ app.get('/user',(req,res)=>{
     })
 
 })
-/* Formato para hacer un post de type
-    {
-        "id_user": "U0001",
-        "username": "Rosa01",
-        "password": "Password123",
-        "privilege": "A"
-    }
-*/
+//  Formato para hacer un post de type
+//     {
+//         "id_user": "U0001",
+//         "username": "Rosa01",
+//         "password": "Password123",
+//         "privilege": "A"
+//     }
+
 app.post('/user',(req,res)=>{
     const sql ='INSERT into user SET ?'
     user = {
@@ -549,7 +549,7 @@ app.get('/user/:id',(req,res)=>{
 })
 
 
-
+*/
 
 connection.connect(error =>{
     if(error) throw error;
