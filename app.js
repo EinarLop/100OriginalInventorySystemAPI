@@ -92,7 +92,7 @@ app.get('/product',(req,res)=>{
         }
 
     })
-
+})
 
 //  Formato para hacer un post en sale 
 // {
