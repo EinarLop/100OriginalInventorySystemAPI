@@ -8,13 +8,35 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-const connection = mysql.createConnection({
-    host:'us-cdbr-east-02.cleardb.com',
-    user:'b00abd3d14eb97',
-    password:'1fcadd8d',
-    database:'heroku_031336fa3af5061'
+// const connection = mysql.createConnection({
+//     host:'us-cdbr-east-02.cleardb.com',
+//     user:'b00abd3d14eb97',
+//     password:'1fcadd8d',
+//     database:'heroku_031336fa3af5061'
 
-})
+// })
+
+// var db_config = {
+//     host: 'us-cdbr-east-02.cleardb.com',
+//     user: 'b00abd3d14eb97',
+//     password: '1fcadd8d',
+//     database: 'heroku_031336fa3af5061'
+// };
+
+const pool  = mysql.createPool({
+  connectionLimit : 10,
+  host            : 'us-cdbr-east-02.cleardb.com',
+  user            : 'b00abd3d14eb97',
+  password        : '1fcadd8d',
+  database        : 'heroku_031336fa3af5061'
+});
+
+pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+  if (error) throw error;
+  console.log('The solution is: ', results[0].solution);
+});
+
+
 
 //routes
 app.get('/',(req,res)=>{
@@ -556,7 +578,7 @@ app.get('/user/:id',(req,res)=>{
 
 */
 
-connection.connect(error =>{
+pool.getConnection(error =>{
     if(error) throw error;
     console.log('Database up and running');
 
