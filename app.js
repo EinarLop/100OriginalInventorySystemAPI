@@ -53,9 +53,9 @@ app.post('/product',(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
     product = {
         "id_product": NULL,
+        "product_code": req.body.product_code,
         "unit_price": req.body.unit_price,
         "unit_cost": req.body.unit_cost,
-        "product_code": req.body.product_code,
         "stock": req.body.stock,
         "img_url": req.body.img_url,
         "id_supplier": req.body.id_supplier,
@@ -80,6 +80,19 @@ app.get('/platforms',(req,res)=>{
     })
 
 })
+
+app.get('/product',(req,res)=>{
+    const sql = "SELECT * from product";
+    pool.query(sql,(error, results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+
 
 //  Formato para hacer un post en sale 
 // {
@@ -148,9 +161,13 @@ app.get('/sale/:id',(req,res)=>{
 
 
 // CRUD from product
-app.get('/product',(req,res)=>{
-    const sql = "SELECT * from product";
-    pool.query(sql,(error, results)=>{
+
+
+})
+app.get('/product/:id',(req,res)=>{
+    const {id } = req.params;
+    const sql = `SELECT * FROM product WHERE id_product="${id}"`;
+    pool.query(sql,(error,results)=>{
         if(error) throw error;
         if(results.length >0){
             res.json(results);
@@ -159,9 +176,7 @@ app.get('/product',(req,res)=>{
         }
 
     })
-
 })
-
 
 //  Formato para hacer un post de un nuevo de producto
 // {
@@ -202,19 +217,7 @@ app.delete("/product/:id", (req, res)=>{
 })
 
 
-app.get('/product/:id',(req,res)=>{
-    const {id } = req.params;
-    const sql = `SELECT * FROM product WHERE id_product="${id}"`;
-    pool.query(sql,(error,results)=>{
-        if(error) throw error;
-        if(results.length >0){
-            res.json(results);
-        }else{
-            res.send('No results');
-        }
 
-    })
-})
 
 
 //CRUD from supplier 
