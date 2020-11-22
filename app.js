@@ -21,6 +21,11 @@ app.get('/',(req,res)=>{
     res.send('Welcome to 100Original');
 
 })
+
+app.get('/local',(req,res)=>{
+    res.send('100Original says hey');
+
+})
 /*
 // CRUD from sale
 app.get('/sale',(req,res)=>{
