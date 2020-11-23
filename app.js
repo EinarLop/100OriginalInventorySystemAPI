@@ -62,12 +62,13 @@ app.post('/product',(req,res)=>{
         "img_url": req.body.img_url,
         "id_supplier": req.body.id_supplier,
     }
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
 
     pool.query(sql,product,error =>{
         if(error) throw error;
+        res.header('Access-Control-Allow-Origin: *');
+        res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+        res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
         res.send('Product Created Succesfully!!!');
     })
 })
