@@ -8,6 +8,8 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+
+
 // const connection = mysql.createConnection({
 //     host:'us-cdbr-east-02.cleardb.com',
 //     user:'b00abd3d14eb97',
@@ -60,6 +62,10 @@ app.post('/product',(req,res)=>{
         "img_url": req.body.img_url,
         "id_supplier": req.body.id_supplier,
     }
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
     pool.query(sql,product,error =>{
         if(error) throw error;
         res.send('Product Created Succesfully!!!');
