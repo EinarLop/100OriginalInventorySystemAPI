@@ -15,7 +15,6 @@ app.use(cors());
 //     user:'b00abd3d14eb97',
 //     password:'1fcadd8d',
 //     database:'heroku_031336fa3af5061'
-
 // })
 
 // var db_config = {
@@ -33,11 +32,11 @@ const pool  = mysql.createPool({
   database        : 'heroku_031336fa3af5061'
 });
 
+
 pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
   if (error) throw error;
   console.log('The solution is: ', results[0].solution);
 });
-
 
 
 //routes
@@ -62,8 +61,6 @@ app.post('/product',(req,res)=>{
         "img_url": req.body.img_url,
         "id_supplier": req.body.id_supplier,
     }
-
-
     pool.query(sql,product,error =>{
         if(error) throw error;
         // res.header('Access-Control-Allow-Origin: *');
@@ -116,6 +113,20 @@ app.get('/product/:id',(req,res)=>{
 })
 
 
+app.get('/product/code/:product_code',(req,res)=>{
+    const {product_code} = req.params;
+    const sql = `SELECT * FROM product WHERE product_code="${product_code}"`;
+    pool.query(sql,(error,results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+})
+
 app.put('/product/:id',(req, res)=>{
     const {id } = req.params;
     const {id_product, unit_price, unit_cost, product_name, product_code,stock, img_url, id_type,id_supplier} = req.body;
@@ -127,6 +138,8 @@ app.put('/product/:id',(req, res)=>{
     })
 
 })
+
+
 //Test
 
 //  Formato para hacer un post en sale 
