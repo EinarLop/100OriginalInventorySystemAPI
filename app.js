@@ -100,6 +100,33 @@ app.get('/product',(req,res)=>{
 
     })
 })
+
+app.get('/product/:id',(req,res)=>{
+    const {id } = req.params;
+    const sql = `SELECT * FROM product WHERE id_product="${id}"`;
+    pool.query(sql,(error,results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+})
+
+
+app.put('/product/:id',(req, res)=>{
+    const {id } = req.params;
+    const {id_product, unit_price, unit_cost, product_name, product_code,stock, img_url, id_type,id_supplier} = req.body;
+
+    const sql = `UPDATE product SET id_product = '${id_product}', unit_price = '${unit_price}', unit_cost = '${unit_cost}',product_code = '${product_code}', stock = '${stock}', img_url = '${img_url}', id_supplier = '${id_supplier}'  WHERE id_product = '${id}' `;
+    pool.query(sql,error =>{
+        if(error) throw error;
+        res.send("Product updated succesfully!");
+    })
+
+})
 //Test
 
 //  Formato para hacer un post en sale 
@@ -172,19 +199,7 @@ app.get('/sale/:id',(req,res)=>{
 
 
 })
-app.get('/product/:id',(req,res)=>{
-    const {id } = req.params;
-    const sql = `SELECT * FROM product WHERE id_product="${id}"`;
-    pool.query(sql,(error,results)=>{
-        if(error) throw error;
-        if(results.length >0){
-            res.json(results);
-        }else{
-            res.send('No results');
-        }
 
-    })
-})
 
 //  Formato para hacer un post de un nuevo de producto
 // {
@@ -201,17 +216,7 @@ app.get('/product/:id',(req,res)=>{
 
 
 
-app.put('/product/:id',(req, res)=>{
-    const {id } = req.params;
-    const {id_product, unit_price, unit_cost, product_name, product_code,stock, img_url, id_type,id_supplier} = req.body;
 
-    const sql = `UPDATE product SET id_product = '${id_product}', unit_price = '${unit_price}', unit_cost = '${unit_cost}', product_name = '${product_name}',product_code = '${product_code}', stock = '${stock}', img_url = '${img_url}', id_type = '${id_type}', id_supplier = '${id_supplier}'  WHERE id_product = '${id}' `;
-    pool.query(sql,error =>{
-        if(error) throw error;
-        res.send("Product updated succesfully!");
-    })
-
-})
 
 app.delete("/product/:id", (req, res)=>{
     const {id } = req.params;
