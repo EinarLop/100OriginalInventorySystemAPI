@@ -61,7 +61,7 @@ app.post('/sale',(req,res)=>{
         "total": req.body.total,
         "id_platform": req.body.id_platform,
     }
-    connection.query(sql,product,error =>{
+    pool.query(sql,product,error =>{
         if(error) {
             console.log(error);
             throw error;
@@ -89,6 +89,19 @@ app.post('/product',(req,res)=>{
         // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         // res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
         res.send('Product Created Succesfully!!!');
+    })
+})
+
+app.post('/createproductsale', (req, res) =>{
+    const sql = 'INSERT into product_sale SET ?'
+    ps = {
+        "id_product": req.body.id_product,
+        "id_sale": req.body.id_sale,
+    }
+
+    pool.query(sql, ps, error =>{
+        if (error) throw error;
+        res.send('Cross reference created succesfully');
     })
 })
 
@@ -134,6 +147,18 @@ app.get('/product/:id',(req,res)=>{
     })
 })
 
+app.get('/sale',(req,res)=>{
+    const sql = `SELECT * FROM sale`;
+    pool.query(sql,(error,results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+})
     
 app.get('/product/code/:product_code',(req,res)=>{
     const {product_code} = req.params;
