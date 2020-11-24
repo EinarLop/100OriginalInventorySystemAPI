@@ -8,26 +8,24 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-
-
-// const connection = mysql.createConnection({
-//     host:'us-cdbr-east-02.cleardb.com',
+//  const connection = mysql.createConnection({
+//    host:'us-cdbr-east-02.cleardb.com',
 //     user:'b00abd3d14eb97',
-//     password:'1fcadd8d',
-//     database:'heroku_031336fa3af5061'
+//      password:'1fcadd8d',
+//      database:'heroku_031336fa3af5061'
 
 
-// }) mysql -h us-cdbr-east-02.cleardb.com -u b00abd3d14eb97 -p
+// // }) mysql -h us-cdbr-east-02.cleardb.com -u b00abd3d14eb97 -p
 
-// })
+//  })
 
 
-// var db_config = {
-//     host: 'us-cdbr-east-02.cleardb.com',
-//     user: 'b00abd3d14eb97',
-//     password: '1fcadd8d',
-//     database: 'heroku_031336fa3af5061'
-// };
+ var db_config = {
+     host: 'us-cdbr-east-02.cleardb.com',
+     user: 'b00abd3d14eb97',
+     password: '1fcadd8d',
+     database: 'heroku_031336fa3af5061'
+};
 
 const pool  = mysql.createPool({
   poolLimit : 10,
@@ -55,7 +53,6 @@ app.get('/local',(req,res)=>{
 
 })
 
-
 app.post('/sale',(req,res)=>{
     const sql ='INSERT into sale SET ?'
     product = {
@@ -73,7 +70,7 @@ app.post('/sale',(req,res)=>{
     })
 })
 
-/*
+
 
 app.post('/product',(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
@@ -137,7 +134,7 @@ app.get('/product/:id',(req,res)=>{
     })
 })
 
-
+    
 app.get('/product/code/:product_code',(req,res)=>{
     const {product_code} = req.params;
     const sql = `SELECT * FROM product WHERE product_code="${product_code}"`;
