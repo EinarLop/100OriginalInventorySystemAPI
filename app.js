@@ -92,7 +92,7 @@ app.post('/product',(req,res)=>{
     })
 })
 
-app.post('/createproductsale', (req, res) =>{
+app.post('/productsale', (req, res) =>{
     const sql = 'INSERT into product_sale SET ?'
     ps = {
         "id_product": req.body.id_product,
@@ -103,6 +103,22 @@ app.post('/createproductsale', (req, res) =>{
         if (error) throw error;
         res.send('Cross reference created succesfully');
     })
+})
+
+
+app.get('/productsale/:id',(req,res)=>{
+      const {id } = req.params;
+    const sql = `SELECT * FROM product_sale WHERE id_sale="${id}"`;
+    pool.query(sql,(error, results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+
 })
 
 // CRUD from sale
