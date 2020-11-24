@@ -97,7 +97,8 @@ app.post('/productsale', (req, res) =>{
     ps = {
         "id_product": req.body.id_product,
         "id_sale": req.body.id_sale,
-    }
+        "quantity": req.body.quantity
+    }   // corece into integer?
 
     pool.query(sql, ps, error =>{
         if (error) throw error;
