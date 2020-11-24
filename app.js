@@ -15,7 +15,12 @@ app.use(cors());
 //     user:'b00abd3d14eb97',
 //     password:'1fcadd8d',
 //     database:'heroku_031336fa3af5061'
+
+
+// }) mysql -h us-cdbr-east-02.cleardb.com -u b00abd3d14eb97 -p
+
 // })
+
 
 // var db_config = {
 //     host: 'us-cdbr-east-02.cleardb.com',
@@ -49,6 +54,26 @@ app.get('/local',(req,res)=>{
     res.send('100Original says hey');
 
 })
+
+
+app.post('/sale',(req,res)=>{
+    const sql ='INSERT into sale SET ?'
+    product = {
+        "id_sale": req.body.id_sale,
+        "date": req.body.date,
+        "total": req.body.total,
+        "id_platform": req.body.id_platform,
+    }
+    connection.query(sql,product,error =>{
+        if(error) {
+            console.log(error);
+            throw error;
+        }
+        res.send('Sale Created Succesfully!!!');
+    })
+})
+
+/*
 
 app.post('/product',(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
@@ -150,6 +175,7 @@ app.put('/product/:id',(req, res)=>{
 //     "total": 1500,
 //     "id_platform": "P1"
 // }
+
 
 /*
 app.post('/sale',(req,res)=>{
