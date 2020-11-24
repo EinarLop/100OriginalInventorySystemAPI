@@ -14,7 +14,7 @@ app.use(cors());
 //     password:'1fcadd8d',
 //     database:'heroku_031336fa3af5061'
 
-// })
+// }) mysql -h us-cdbr-east-02.cleardb.com -u b00abd3d14eb97 -p
 
 // var db_config = {
 //     host: 'us-cdbr-east-02.cleardb.com',
@@ -48,6 +48,24 @@ app.get('/local',(req,res)=>{
     res.send('100Original says hey');
 
 })
+
+app.post('/sale',(req,res)=>{
+    const sql ='INSERT into sale SET ?'
+    product = {
+        "id_sale": req.body.id_sale,
+        "date": req.body.date,
+        "total": req.body.total,
+        "id_platform": req.body.id_platform,
+    }
+    connection.query(sql,product,error =>{
+        if(error) {
+            console.log(error);
+            throw error;
+        }
+        res.send('Sale Created Succesfully!!!');
+    })
+})
+
 /*
 // CRUD from sale
 app.get('/sale',(req,res)=>{
@@ -74,20 +92,7 @@ app.get('/sale',(req,res)=>{
 // }
 
 
-app.post('/sale',(req,res)=>{
-    const sql ='INSERT into sale SET ?'
-    product = {
-        "id_sale": req.body.id_sale,
-        "date": req.body.date,
-        "quantity": req.body.quantity,
-        "total": req.body.total,
-        "id_platform": req.body.id_platform,
-    }
-    connection.query(sql,product,error =>{
-        if(error) throw error;
-        res.send('Sale Created Succesfully!!!');
-    })
-})
+
 
 app.put('/sale/:id',(req, res)=>{
     const {id } = req.params;
