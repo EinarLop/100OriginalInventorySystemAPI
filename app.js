@@ -4,9 +4,18 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3010;
 const app = express();
 const cors = require('cors');
-
+const bcrypt = require('bcrypt');
+var cookieParser = require("cookie-parser");
 app.use(express.json());
-app.use(cors());
+const corsConfig = { origin: true, credentials: true, }; 
+
+app.use(cors(corsConfig));
+
+//const jwt = require('jsonwebtoken');
+
+
+
+app.use(cookieParser());
 
 //  const connection = mysql.createConnection({
 //    host:'us-cdbr-east-02.cleardb.com',
@@ -39,17 +48,85 @@ pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
   console.log('The solution is: ', results[0].solution);
 });
 
+let randomNumber;
+function generateRandomNumber(){
+  return Math.floor(Math.random() *10);
+}
 
 //routes
-app.get('/',(req,res)=>{
-    res.send('Welcome to 100Original');
-
+app.get('/', auth, function(req,res){
+    res.send('Welcome to 100Original API');
 })
 
-app.get('/local',(req,res)=>{
-    res.send('100Original says hey');
+// AUTHENTICATION MIDDLEWARE FOR PRIVATE ROUTES
+function auth(req,res,next) {
+    if(req.query.admin==randomNumber){
+    next();    
+    }   
+    else{
+        return res.status(401).send("User not authenticated");
+    }
+}
 
+
+// Authentification routes
+app.post('/login', async (req, res) => {
+    // req.body has to be an object: {username, password}
+    // Check that user exists in DB and retrieve it 
+    const username = req.body.username;
+    let user = {};
+
+    const getUser = () => 
+            new Promise((resolve, reject) => {
+                pool.query(`SELECT * from user where username = '${username}'`, (err, results) => {
+                    if (err) reject(err);
+                    user = results[0];
+                    resolve(results);
+                });
+            });
+
+    await getUser();
+    console.log(user);
+    if (user === undefined) return res.status(400).send("Email/password is wrong");
+    // if user exists, compare the hashed given password with hashed stored password
+    const validPass = await bcrypt.compare(req.body.password, user.password);   // returns true or false
+    if (!validPass) return res.status(400).send("Email/password is wrong")
+
+    //res.send("Login successful");
+    randomNumber = generateRandomNumber();
+    res.cookie("100Orig-Id", randomNumber)
+      .send("Login successful and Login successful Cookie is set");
+      
 })
+
+app.post('/register', async (req, res)=>{
+    // req.body has to be an object: {username, password}
+
+    // 1. check that user does not exist
+
+    // 2. validate the rest of the input: user, password etc
+
+    // 3. hash the password!
+    const salt = await bcrypt.genSalt(10);
+    const hashPassw = await bcrypt.hash(req.body.password, salt);       // varchar(60)
+
+    // Create the user object and insert into Database
+    const sql = 'INSERT into user SET ?';
+    const user = {
+        "id_user": null,
+        "username": req.body.username,
+        "password": hashPassw,
+        "privilege": 'A'
+    };
+
+    pool.query(sql, user, error =>{
+        if(error) throw error;
+        // res.header('Access-Control-Allow-Origin: *');
+        // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+        // res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+        res.send('USer registered succesfully');
+    })
+});
 
 app.post('/sale',(req,res)=>{
     const sql ='INSERT into sale SET ?'
@@ -134,7 +211,7 @@ app.get('/platforms',(req,res)=>{
 
 })
 
-app.get('/product',(req,res)=>{
+app.get('/product', auth, (req,res)=>{
     const sql = "SELECT * from product";
     pool.query(sql,(error, results)=>{
         if(error) throw error;
@@ -248,6 +325,16 @@ app.delete("/sale/:id", (req, res) => {
     if (error) throw error;
     res.send("Sale deleted succesfully!");
   });
+});
+
+app.delete("/product/:id", (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE from product WHERE id_product = '${id}'`;
+  
+    pool.query(sql, (error) => {
+      if (error) throw error;
+      res.send("Product deleted succesfully!");
+    });
 });
 
 
