@@ -95,12 +95,6 @@ app.post('/login', async (req, res) => {
 
     //res.send("Login successful");
     randomNumber = generateRandomNumber();
-    res.header("Access-Control-Allow-Origin: https://100originalinventorysystem.vercel.app/");
-    res.header("Access-Control-Allow-Credentials: true");
-    res.header("Access-Control-Allow-Methods: GET, POST");
-    res.header("Access-Control-Allow-Headers: Content-Type, *");
-
-
     res.cookie("100Orig-Id", randomNumber).send("Login successful and Cookie is set");
       
 })
@@ -109,6 +103,7 @@ app.post('/register', async (req, res)=>{
     // req.body has to be an object: {username, password}
 
     // 1. check that user does not exist
+    //TESTING
 
     // 2. validate the rest of the input: user, password etc
 
