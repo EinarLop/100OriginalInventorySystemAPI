@@ -90,10 +90,15 @@ app.post('/login', async (req, res) => {
     if (user === undefined) return res.status(400).send("Email/password is wrong");
     // if user exists, compare the hashed given password with hashed stored password
     const validPass = await bcrypt.compare(req.body.password, user.password);   // returns true or false
-    if (!validPass) return res.status(400).send("Email/password is wrong")
+    if (!validPass) return res.status(400).send("Email/password is wrong");
 
     //res.send("Login successful");
     randomNumber = generateRandomNumber();
+    res.header("Access-Control-Allow-Origin: http://origin.domain:port");
+    res.header("Access-Control-Allow-Credentials: true");
+    res.header("Access-Control-Allow-Methods: GET, POST");
+    res.header("Access-Control-Allow-Headers: Content-Type, *");
+
     res.cookie("100Orig-Id", randomNumber)
       .send("Login successful and Login successful Cookie is set");
       
