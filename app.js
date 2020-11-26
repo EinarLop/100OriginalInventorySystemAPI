@@ -95,12 +95,7 @@ app.post('/login', async (req, res) => {
 
     //res.send("Login successful");
     randomNumber = generateRandomNumber();
-    res.cookie("100Orig-Id", randomNumber, {
-    secure: true,
-    sameSite: none,
-    httpOnly: true,
-    domain: 'https://100originalinventorysystem.vercel.app/',
-    }).send("Login successful and Cookie is set");
+    res.cookie("100Orig-Id", randomNumber).send("Login successful and Cookie is set");
       
 })
 
