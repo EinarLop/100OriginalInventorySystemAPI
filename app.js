@@ -221,7 +221,7 @@ app.put('/productstock/:id', async (req, res)=>{
     const sql = `UPDATE product SET stock = '${newStock}'  WHERE id_product = '${id}' `;
     pool.query(sql, error =>{
         if(error) throw error;
-        res.send("PUTA VERGA");
+        res.send("Product stock updated succesfully!");
     })
 })
 
