@@ -95,20 +95,13 @@ app.post('/login', async (req, res) => {
 
     //res.send("Login successful");
     randomNumber = generateRandomNumber();
-    res.header("Access-Control-Allow-Origin: http://origin.domain:port");
+    res.header("Access-Control-Allow-Origin: https://100originalinventorysystem.vercel.app/");
     res.header("Access-Control-Allow-Credentials: true");
     res.header("Access-Control-Allow-Methods: GET, POST");
     res.header("Access-Control-Allow-Headers: Content-Type, *");
 
 
-    res.cookie("100Orig-Id", randomNumber, { 
-        sameSite: 'none',
-        domain: "https://100originalinventorysystem.vercel.app/",
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        sameSite: 'none'
-
-    }).send("Login successful and Cookie is set");
+    res.cookie("100Orig-Id", randomNumber).send("Login successful and Cookie is set");
       
 })
 
