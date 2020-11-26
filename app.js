@@ -14,11 +14,9 @@ app.use(cors());
 //      password:'1fcadd8d',
 //      database:'heroku_031336fa3af5061'
 
-
 // // }) mysql -h us-cdbr-east-02.cleardb.com -u b00abd3d14eb97 -p
 
 //  })
-
 
  var db_config = {
      host: 'us-cdbr-east-02.cleardb.com',
@@ -81,8 +79,7 @@ app.post('/product',(req,res)=>{
         "unit_cost": req.body.unit_cost,
         "stock": req.body.stock,
         "img_url": req.body.img_url,
-        "id_supplier": req.body.id_supplier,
-    }
+    }    
     pool.query(sql,product,error =>{
         if(error) throw error;
         // res.header('Access-Control-Allow-Origin: *');
@@ -98,7 +95,7 @@ app.post('/productsale', (req, res) =>{
         "id_product": req.body.id_product,
         "id_sale": req.body.id_sale,
         "quantity": req.body.quantity
-    }   // corece into integer?
+    }   
 
     pool.query(sql, ps, error =>{
         if (error) throw error;
@@ -193,15 +190,65 @@ app.get('/product/code/:product_code',(req,res)=>{
 
 app.put('/product/:id',(req, res)=>{
     const {id } = req.params;
-    const {id_product, unit_price, unit_cost, product_name, product_code,stock, img_url, id_type,id_supplier} = req.body;
+    const {id_product, product_code,unit_price, unit_cost, stock, img_url} = req.body;
 
-    const sql = `UPDATE product SET id_product = '${id_product}', unit_price = '${unit_price}', unit_cost = '${unit_cost}',product_code = '${product_code}', stock = '${stock}', img_url = '${img_url}', id_supplier = '${id_supplier}'  WHERE id_product = '${id}' `;
+    const sql = `UPDATE product SET id_product = '${id_product}', unit_price = '${unit_price}', unit_cost = '${unit_cost}',product_code = '${product_code}', stock = '${stock}', img_url = '${img_url}'  WHERE id_product = '${id}' `;
     pool.query(sql,error =>{
         if(error) throw error;
         res.send("Product updated succesfully!");
     })
-
 })
+
+
+app.put('/productstock/:id', async (req, res)=>{
+    const {id} = req.params;
+    const quantity = req.body.quantity;
+    console.log("quantity: " + quantity);
+    const stockQry = `SELECT stock from product where id_product = '${id}'`;
+    let newStock = quantity;
+
+    const getStock = () => 
+            new Promise((resolve, reject) => {
+                pool.query(`SELECT stock from product where id_product = '${id}'`, (err, results) => {
+                    if (err) reject(err);
+                    console.log(results[0].stock)
+                    newStock = results[0].stock - quantity
+                    resolve(results);
+                });
+            });
+    await getStock();
+    
+    const sql = `UPDATE product SET stock = '${newStock}'  WHERE id_product = '${id}' `;
+    pool.query(sql, error =>{
+        if(error) throw error;
+        res.send("PUTA VERGA");
+    })
+})
+
+app.get('/sale/:id',(req,res)=>{
+    const {id } = req.params;
+    const sql = `SELECT * FROM sale WHERE id_sale="${id}"`;
+    pool.query(sql,(error,results)=>{
+        if(error) throw error;
+        if(results.length >0){
+            res.json(results);
+        }else{
+            res.send('No results');
+        }
+
+    })
+})
+
+
+app.delete("/sale/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `DELETE from sale WHERE id_sale = '${id}'`;
+
+  pool.query(sql, (error) => {
+    if (error) throw error;
+    res.send("Sale deleted succesfully!");
+  });
+});
 
 
 //Test
