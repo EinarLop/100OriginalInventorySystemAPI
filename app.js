@@ -95,7 +95,9 @@ app.post('/login', async (req, res) => {
 
     //res.send("Login successful");
     randomNumber = generateRandomNumber();
-    res.cookie("100Orig-Id", randomNumber).send("Login successful and Cookie is set");
+    res.cookie("100Orig-Id", randomNumber, {
+        sameSite: none
+    }).send("Login successful and Cookie is set");
       
 })
 
