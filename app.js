@@ -103,7 +103,11 @@ app.post('/login', async (req, res) => {
 
     res.cookie("100Orig-Id", randomNumber, { 
         sameSite: 'none',
-        secure: true
+        domain: "https://100originalinventorysystem.vercel.app/",
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        sameSite: 'none'
+
     }).send("Login successful and Cookie is set");
       
 })
