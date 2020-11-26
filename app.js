@@ -48,7 +48,8 @@ pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
   console.log('The solution is: ', results[0].solution);
 });
 
-let randomNumber;
+let randomNumber;           // una sola instancia de servidor
+
 function generateRandomNumber(){
   return Math.floor(Math.random() *10);
 }
@@ -86,7 +87,6 @@ app.post('/login', async (req, res) => {
             });
 
     await getUser();
-    console.log(user);
     if (user === undefined) return res.status(400).send("Email/password is wrong");
     // if user exists, compare the hashed given password with hashed stored password
     const validPass = await bcrypt.compare(req.body.password, user.password);   // returns true or false
@@ -121,14 +121,11 @@ app.post('/register', async (req, res)=>{
 
     pool.query(sql, user, error =>{
         if(error) throw error;
-        // res.header('Access-Control-Allow-Origin: *');
-        // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        // res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
         res.send('USer registered succesfully');
     })
 });
 
-app.post('/sale',(req,res)=>{
+app.post('/sale', auth,(req,res)=>{
     const sql ='INSERT into sale SET ?'
     product = {
         "id_sale": req.body.id_sale,
@@ -147,7 +144,7 @@ app.post('/sale',(req,res)=>{
 
 
 
-app.post('/product',(req,res)=>{
+app.post('/product', auth,(req,res)=>{
     const sql ='INSERT into PRODUCT SET ?'
     product = {
         "id_product": req.body.id_product,
@@ -238,7 +235,7 @@ app.get('/product/:id',(req,res)=>{
     })
 })
 
-app.get('/sale',(req,res)=>{
+app.get('/sale', auth, (req,res)=>{
     const sql = `SELECT * FROM sale`;
     pool.query(sql,(error,results)=>{
         if(error) throw error;
