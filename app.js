@@ -6,7 +6,7 @@ const app = express();
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 var cookieParser = require("cookie-parser");
-const nodemon = require('nodemon');
+
 app.use(express.json());
 const corsConfig = { origin: true, credentials: true, }; 
 
