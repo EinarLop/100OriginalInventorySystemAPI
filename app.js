@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 var cookieParser = require("cookie-parser");
+const nodemon = require('nodemon');
 app.use(express.json());
 const corsConfig = { origin: true, credentials: true, }; 
 
@@ -99,8 +100,11 @@ app.post('/login', async (req, res) => {
     res.header("Access-Control-Allow-Methods: GET, POST");
     res.header("Access-Control-Allow-Headers: Content-Type, *");
 
-    res.cookie("100Orig-Id", randomNumber)
-      .send("Login successful and Login successful Cookie is set");
+
+    res.cookie("100Orig-Id", randomNumber, { 
+        sameSite: 'none',
+        secure: true
+    }).send("Login successful and Cookie is set");
       
 })
 
